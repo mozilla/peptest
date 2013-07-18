@@ -374,7 +374,13 @@ def main(args=sys.argv[1:]):
         return 2
 
     # setup the logging
-    logger = mozlog.getLogger('PEP', options.logFile)
+    if options.logFile:
+        handler = mozlog.FileHandler(options.logFile)
+        handler.setFormatter(mozlog.MozFormatter())
+        logger = mozlog.getLogger('PEP', handler)
+    else:
+        logger = mozlog.getLogger('PEP')
+
     if options.logLevel:
         logger.setLevel(getattr(mozlog, options.logLevel, 'INFO'))
 
